@@ -1,0 +1,26 @@
+This is a guide to show where to edit certain parameters in the code for this project.
+
+NetCDFDataClean.py
+function=This file takes NetCDF files and turns them into dataframes to be
+compatible for the rest of the computation/models. It converts data from the UW
+atmospheric science database.
+
+line 6  - main function has a filepath that you can change to clean netcdf
+          on different locations saved
+line 19 -the first file I worked with included dates that were from 1950 so
+          I filtered for 1985 and on. You can change the dates or get rid of
+          this line if it is unnecessary.
+line 81 -This takes the top ONE value per year in a dataframe. If you want to
+          consider a different amount of values per water year, I have left code
+          example for 30 values per water year.
+
+scraping UW database portion
+line 112-this is an example of baselinks. You can change baselinks depending
+          on the location of the model in URL form.
+          The linklist portion has a parse to start from 5 and on because that
+          page started to show link information after the 5th item in the list.
+          If you are using this for another baselink, consider checking the
+          linklist parse. The data also is limited to 198510 and beyond (change
+          if necessary).
+
+Model.py
