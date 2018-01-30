@@ -212,9 +212,9 @@ def main():
 
     keyfiltups=zip(keylist, filenames)
 
-    pool=multiprocessing.Pool(multiprocessing.cpu_count)
+    pool=multiprocessing.Pool(multiprocessing.cpu_count())
     pool.map(awsmain, keyfiltups)
 
-    
+
 if __name__ == '__main__':
     main()
