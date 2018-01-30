@@ -47,5 +47,6 @@ def fetch_all_files(baselink):
         fetch_netcdf(baselink, link)
 
 
+
 if __name__=="__main__":
     fetch_all_files(baselink)

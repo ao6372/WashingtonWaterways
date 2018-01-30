@@ -10,7 +10,7 @@ import matplotlib
 matplotlib.use('agg')
 from matplotlib import pyplot as plt
 from random import random
-from model import ( onclick_main)
+from multiplemodels import make_plot
 
 app = Flask(__name__)
 #data_model = DataModel()

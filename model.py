@@ -10,8 +10,8 @@ from math import gamma
 from location_parameters import find_sample_pctl
 from location_parameters import find_beta_TBFW
 
-dfsource=pd.read_csv('CCSM3_A1BExample.csv')
-dfsource.index=dfsource['wateryear']
+#dfsource=pd.read_csv('CCSM3_A1BExample.csv')
+#dfsource.index=dfsource['wateryear']
 #reads in the saved file on the server that has all necessary values for reference
 
 def get_extreme_values(year, coord, dfsource):
@@ -105,13 +105,12 @@ def make_gev_samples(dataarray, year, pctl, n=1000):
     sampdf.columns=[year]
     return sampdf
 
-def gev_samples_allyears(startyear, coord, endyear, dfsource=dfsource):
+def gev_samples_allyears(startyear, coord, endyear, dfsource):
     #coord must be in string with a space formatted like so '(48.71875, -122.09375)'
     #highdf is to understand stream width over time
     #lowdf is for comparison with BFW
     #returns dfs with n (default 1000) samples per year
     sampdflist=[]
-
     #adjusts for different TBFW in different regions
     #adjusts for beta in different regions
     beta, TBFW=find_beta_TBFW(coord)
@@ -158,7 +157,7 @@ def plot_dist_quantiles(yearstart, yearend, df):
     ax.legend()
     return fig
 
-def onclick_main(startyear, coord, endyear, dfsource=dfsource):
+def onclick_main(startyear, coord, endyear, dfsource):
     #possibly allow download of the ratiodf
     beta, TBFW=find_beta_TBFW(coord)
     gevsampsallyrs=gev_samples_allyears(startyear, coord, endyear, dfsource)
@@ -169,7 +168,7 @@ def onclick_main(startyear, coord, endyear, dfsource=dfsource):
     return fig
 
 
-def convertfiles_toratios(startyear, coord, endyear, dfsource=dfsource):
+def convertfiles_toratios(startyear, coord, endyear, dfsource):
     beta, TBFW=find_beta_TBFW(coord)
     gevsampsallyrs=gev_samples_allyears(startyear, coord, endyear, dfsource)
     ratiodf=make_ratios(gevsampsallyrs)
