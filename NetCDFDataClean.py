@@ -63,7 +63,7 @@ def awsmain(keyfiltup):
         maxyearly=take_top_yearly_values(waterdf)
         #convert to cfs
         finaldf=maxyearly.apply(convertocfs)
-        finaldf.index=finaldf['wateryear']
+        #finaldf.index=finaldf['wateryear']
 
     finaldf.to_csv(filename)
 
