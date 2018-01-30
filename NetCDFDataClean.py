@@ -43,7 +43,7 @@ def awsmain(keyfiltup):
     #dates above 1985-10-1 for a specific file set
 
 
-    with tempfile.TemporaryDirectory() as tmpdirname:
+    with tempfile.TemporaryDirectory(dir='/mnt/ww/tmp') as tmpdirname:
         ncfile=os.path.join(tmpdirname, 'placeholder.nc')
         response=s3.download_file(Bucket='uwmodelfiles',
                          Key=key,
