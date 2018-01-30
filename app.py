@@ -40,18 +40,11 @@ def foo():
         '''
 
 
-@app.route('/foo/plot/<int:n>')
-def get_graph(n):
-    plt.figure()
-    plt.plot(range(n), [random() for i in range(n)])
-    image = BytesIO()
-    plt.savefig(image)
-    return image.getvalue(), 200, {'Content-Type': 'image/png'}
 
-
-
-@app.route('/calculate')
+@app.route('/calculate', methods=['POST'])
 def graph():
+    user_data=request.json
+    print(user_data)
     #graphs for a specific coordinate
     #supposed to have input year and design year and coordinates
     startyr=int(user_data['Startyear'])
