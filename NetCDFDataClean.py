@@ -6,8 +6,10 @@ import requests
 import shutil
 import boto3
 import os
+import tempfile
+import multiprocessing
 
-def main(filepath="Database files/hb2860_transient_runs.ccsm3_A1B.example (2).nc"):
+def mainexample(filepath="Database files/hb2860_transient_runs.ccsm3_A1B.example (2).nc"):
     #for each saved file it will clean it up and produce the DataFrame
     #add in a different file path if you want
     #This code has specifications for taking top value per year for
@@ -32,34 +34,40 @@ def main(filepath="Database files/hb2860_transient_runs.ccsm3_A1B.example (2).nc
     finaldf.to_csv('CCSM3_A1BExample.csv')
     return finaldf
 
-def awsmain(key, filename):
+def awsmain(keyfiltup):
+    key, filename=keyfiltup
     s3=boto3.client("s3")
     #downloads from s3 bucket 'uwmodelfiles'
     #filename is the csv filename for the final cleaned df
     #This code has specifications for taking top value per year for
     #dates above 1985-10-1 for a specific file set
-    response=s3.download_file(Bucket='uwmodelfiles',
+
+
+    with tempfile.TemporaryDirectory() as tmpdirname:
+        ncfile=os.path.join(tmpdirname, 'placeholder.nc')
+        response=s3.download_file(Bucket='uwmodelfiles',
                          Key=key,
-                         Filename='placeholder.nc')
-    group=Dataset('placeholder.nc')
-    clist=makecoordlist(group)
-    tlist=maketimelist(group)
-    runoffdf=makedfrunoff(group, clist, tlist)
-    baseflowdf=makedfbaseflow(group, clist, tlist)
-    df=runoffdf+baseflowdf
-    #this file already includes dates from 19850
-    #change date if you want to include different window
-    df=df[[c for c in df.columns if c >pd.to_datetime('1985-10-1')]]
-    #add water yearfirst
-    waterdf=addwateryear(df)
-    #take top 30 values per year
-    maxyearly=take_top_yearly_values(waterdf)
-    #convert to cfs
-    finaldf=maxyearly.apply(convertocfs)
-    #finaldf.index=finaldf['wateryear']
+                         Filename=ncfile)
+        group=Dataset(ncfile)
+        clist=makecoordlist(group)
+        tlist=maketimelist(group)
+        runoffdf=makedfrunoff(group, clist, tlist)
+        baseflowdf=makedfbaseflow(group, clist, tlist)
+        df=runoffdf+baseflowdf
+        #this file already includes dates from 19850
+        #change date if you want to include different window
+        df=df[[c for c in df.columns if c >pd.to_datetime('1985-10-1')]]
+        #add water yearfirst
+        waterdf=addwateryear(df)
+        #take top 30 values per year
+        maxyearly=take_top_yearly_values(waterdf)
+        #convert to cfs
+        finaldf=maxyearly.apply(convertocfs)
+        finaldf.index=finaldf['wateryear']
+
     finaldf.to_csv(filename)
-    os.remove('placeholder.nc')
-    return finaldf
+
+
 
 
 def makecoordlist(group):
@@ -178,10 +186,9 @@ def dl_allfiles(baselink, linklist):
     totaldf=pd.concat(dflist,axis=1)
     return totaldf
 
-
-if __name__ == '__main__':
-    #reads off the bucket files to make dataframes with water year as index
-    #columns are lat/lon combination
+def main():
+        #reads off the bucket files to make dataframes with water year as index
+        #columns are lat/lon combination
     keylist=['ccsm3_A1B/hb2860_transient_runs.ccsm3_A1B.nc',
                 'ccsm3_B1/hb2860_transient_runs.ccsm3_B1.nc',
                 'cgcm3.1_t47_A1B/hb2860_transient_runs.cgcm3.1_t47_A1B.nc',
@@ -203,5 +210,11 @@ if __name__ == '__main__':
                 'reference_csv/pcm1_A1B.csv', 'reference_csv/pcm1_B1.csv'
                 ]
 
-    for key,fn in zip(keylist, filenames):
-        awsmain(key, fn)
+    keyfiltups=zip(keylist, filenames)
+
+    pool=multiprocessing.Pool(multiprocessing.cpu_count)
+    pool.map(awsmain, keyfiltups)
+
+    
+if __name__ == '__main__':
+    main()

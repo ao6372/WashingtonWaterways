@@ -9,7 +9,7 @@ from math import gamma
 from location_parameters import find_sample_pctl
 from location_parameters import find_beta_TBFW
 
-from model import gev_samples_allyears
+from model import convertfiles_toratios
 
 #list of file location references
 #order matters to know which models made which percentile that jumped
@@ -24,7 +24,8 @@ def gevsamps_modelsyears(startyear, coord, endyear):
         df=pd.read_csv(dfpath)
         pctldf=convertfiles_toratios(startyear, coord, endyear, dfsource=df)
         pctldfslist.append(pctldf)
-    return pd.concat(pctldfslist)
+        allyearspctls=pd.concat(pctldfslist)
+    return allyearpctls
 
 def above_threshold(thresh, dfpctls, coord):
     #takes list of dataframes and looks for 5th Percentile for all models
@@ -34,4 +35,7 @@ def above_threshold(thresh, dfpctls, coord):
     votepctls=vote/fivpctl.shape[0] #divides by number of models
     return votepctls
 
-def
+def get_avgpctls(allyearpctls):
+    groupedf=allyearpctls.groupby(allyearpctls.index)
+    meandf=groupedf.mean()
+    return meandf

@@ -152,7 +152,7 @@ def plot_dist_quantiles(yearstart, yearend, df):
     ax.plot(df.columns, df.iloc[0], label='5th Percentile')
     ax.plot(df.columns, df.iloc[1], label='50th Percentile')
     ax.plot(df.columns, df.iloc[2], label='95th Percentile')
-    ax.set_xlabel('Years')
+    ax.set_xlabel('Year')
     ax.set_ylabel('Ratio')
     ax.set_title('Ratio of Stream Flow {} - {}'.format(yearstart,yearend))
     ax.legend()
