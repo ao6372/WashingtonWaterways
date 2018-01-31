@@ -1,5 +1,5 @@
 
-<img src="http://img.youtube.com/vi/WMcGYdezf7E/0.jpg" 
+<img src="images/salmonculvert.jpg" 
  width="240" height="180" border="10" />
 
 ## The Culvert Case 
@@ -12,7 +12,7 @@ and must be able to allow salmon migration during this period due to the court c
 In the Culvert Case, Washington State government was ordered by a federal court to replace all state - owned culverts located on 
 the Olympic Peninsula, in the Puget Sound Basin, or in the Chehalis River Basin that block 200 meters or more of salmon habitat. 
 About 10,000 culverts are estimated to fit that description, and their replacement with culverts that pass fish is estimated to 
-cost about $22.45 billion.
+cost about $2.45 billion.
 
 Washington State is responsible for identifying the culverts that will not be viable for salmon migration and replace them. Given that 
 the replacement process is already very costly and time consuming, the greatest financial loss would occur if the culvert replacement 
