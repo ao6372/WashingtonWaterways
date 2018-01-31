@@ -13,21 +13,8 @@ from model import convertfiles_toratios
 
 #list of file location references
 #order matters to know which models made which percentile that jumped
-dfpathsA1=['reference_csv/ccsm3_A1B.csv',
-                'reference_csv/cgcm3.1_t47_A1B.csv',
-                'reference_csv/cnrm_cm3_A1B.csv',
-                 'reference_csv/echam5_A1B.csv',
-                 'reference_csv/echo_g_A1B.csv',
-                'reference_csv/pcm1_A1B.csv'
-                ]
 
-dfpathsB1=['reference_csv/ccsm3_B1.csv',
-                'reference_csv/cnrm_cm3_B1.csv',
-                'reference_csv/echam5_B1.csv',
-                'reference_csv/echo_g_B1.csv',
-                'reference_csv/hadcm_B1.csv',
-                'reference_csv/pcm1_B1.csv'
-                ]
+
 
 
 #associated models with each path for researcher reference
@@ -91,9 +78,33 @@ def plot_fivepctls(fivepctldf, votepctl, startyear, endyear, thresh, coord):
     ax2.legend()
     return fig, fig2
 
-def make_plot(coord, startyear, endyear, thresh, paths):
+def make_multimodel_plotdataA1(coord, startyear, endyear, thresh, paths):
+    paths=['reference_csv/ccsm3_A1B.csv',
+                    'reference_csv/cgcm3.1_t47_A1B.csv',
+                    'reference_csv/cnrm_cm3_A1B.csv',
+                     'reference_csv/echam5_A1B.csv',
+                     'reference_csv/echo_g_A1B.csv',
+                    'reference_csv/pcm1_A1B.csv'
+                    ]
     dfpctls=gevsamps_modelsyears(startyear, coord, endyear, paths)
+    downloaddata=get_avgpctls(dfpctls) #for downloading analysis
+    modelgraphdata=get_fivepctl(dfpctls)
+    modelavgdata=modelgraphdata.mean()
+    probabilitydata=above_threshold(thresh, modelgraphdata, coord)
+    return downloaddata, modelgraphdata, modelavgdata, probabilitydata
+
+
+def make_multimodel_plotdataB1(coord, startyear, endyear, thresh):
+    paths=['reference_csv/ccsm3_B1.csv',
+                'reference_csv/cnrm_cm3_B1.csv',
+                'reference_csv/echam5_B1.csv',
+                'reference_csv/echo_g_B1.csv',
+                'reference_csv/hadcm_B1.csv',
+                'reference_csv/pcm1_B1.csv'
+                ]
+
+    dfpctls=gevsamps_modelsyears(startyear, coord, endyear, paths)
+    meandf=get_avgpctls(dfpctls) #for downloading analysis
     fivepctldf=get_fivepctl(dfpctls)
     votepctl=above_threshold(thresh, fivepctldf, coord)
-    modelplot, probplot=plot_fivepctls(fivepctldf, votepctl, startyear, endyear, thresh, coord)
-    return modelplot, probplot
+    return

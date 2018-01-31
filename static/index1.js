@@ -1,14 +1,15 @@
 
   submit = function(){
-    Lattitude = $("input#lat").val()
-    Longitude = $("input#lon").val()
-    Startyear = $("input#startyr").val()
-    Endyear = $("input#endyr").val()
+    lat = $("input#lat").val()
+    lon = $("input#lon").val()
+    startyr = $("input#startyr").val()
+    endyr = $("input#endyr").val()
+    thresh=$("input#thresh").val()
 
-    values = {Lattitude : Lattitude,
-      Longitude : Longitude,
-      Startyear : Startyear,
-      Endyear: Endyear}
+    values = {lat : lat,
+      lon : lon,
+      startyr : startyr,
+      endyr: endyr}
 
     console.log(values)
 
