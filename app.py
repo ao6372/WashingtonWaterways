@@ -30,15 +30,18 @@ def mainpage():
 
 @app.route('/calculate', methods=['POST'])
 def getinputs():
+    print('went')
     user_data=request.json
     print(user_data)
-    thresh=int(user_data['thresh'])
+    #thresh=int(user_data['thresh'])
     startyr=int(user_data['startyr'])
     coord=user_data['lat']+user_data['lon']
     endyr=int(user_data['endyr'])
 
 
-def graph():
+def generate_graph_values():
+    downloaddata, modelgraphdata, modelavgdata, probabilitydata=make_multimodel_plotdataA1(coord, startyear,
+                                endyear, thresh, paths)
     #image = BytesIO()
     #fig.savefig(image)
     return 'went through' #image.getvalue(), 200, {'Content-Type': 'image/png'}

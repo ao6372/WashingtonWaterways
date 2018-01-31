@@ -32,7 +32,7 @@ def gevsamps_modelsyears(startyear, coord, endyear, dfpaths):
         df.index=df['wateryear']
         pctldf=convertfiles_toratios(startyear, coord, endyear, dfsource=df)
         pctldfslist.append(pctldf)
-        dfpctls=pd.concat(pctldfslist)
+    dfpctls=pd.concat(pctldfslist)
     return dfpctls
 
 def get_fivepctl(dfpctls):

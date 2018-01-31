@@ -3,7 +3,7 @@
 <head>
   <title> Banflow Width Calculator </title>
   <script defer src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
-  <script defer src="./index1.js"></script>
+  <script defer src="static/indexreal.js"></script>
 </head>
 
 <body>
@@ -20,8 +20,8 @@
           <form class="form-inline">
             <div class="col-md-4 col-sm-4">
               <div class="form-group">
-                <label for="Lattitude">Lattitude</label>
-                <input type="text" class="form" id="lat" placeholder="Lattitude">
+                <label for="Latitude">Latitude</label>
+                <input type="text" class="form" id="lat" placeholder="Latitude">
               </div>
             </div>
             <div class="col-md-4 col-sm-4">
@@ -44,6 +44,13 @@
                     <input type="int" class="form-control" id="endyr" placeholder="year">
                   </div>
                 </div>
+                <div class="col-md-4 col-sm-4">
+                  <div class="col-md-4 col-sm-4">
+                    <div class="form-group">
+                      <label for="Threshold">Threshold</label>
+                      <input type="int" class="form-control" id="thresh" placeholder="ratio">
+                    </div>
+                  </div>
                 <button id="submitButton">Calculate</button>
               </div>
             </div>
