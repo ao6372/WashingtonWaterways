@@ -10,15 +10,17 @@ import matplotlib
 matplotlib.use('agg')
 from matplotlib import pyplot as plt
 from random import random
-from multiplemodels import make_plot
+from multiplemodels import make_multimodel_plotdataA1
 
 app = Flask(__name__)
 #data_model = DataModel()
 
 @app.route('/')
-def contactform():
-    return render_template('index.html')
-#
+def mainpage():
+    return render_template('index1.html')
+
+
+#Make download option for fivepctldf
 # @app.route('/download')
 # def generatefile():
 #     #save the contact.html in template directory
@@ -26,34 +28,20 @@ def contactform():
 #     output=post(dffilepath)
 #     return output
 
-# def post(dffilepath):
-
-
-
-@app.route('/foo')
-def foo():
-    return '''
-        <h2>Here's my plot!</h2>
-        <img src='/foo/plot/5'>
-        <img src='/foo/plot/10'>
-        <img src='/foo/plot/15'>
-        '''
-
-
-
 @app.route('/calculate', methods=['POST'])
-def graph():
+def getinputs():
     user_data=request.json
     print(user_data)
-    #graphs for a specific coordinate
-    #supposed to have input year and design year and coordinates
-    startyr=int(user_data['Startyear'])
-    coord=user_data['Lattitude']+user_data['Longitude']
-    endyr=int(user_data['Endyear'])
-    fig=onclick_main(2030, '(48.71875, -122.09375)', 2070)
-    image = BytesIO()
-    fig.savefig(image)
-    return image.getvalue(), 200, {'Content-Type': 'image/png'}
+    thresh=int(user_data['thresh'])
+    startyr=int(user_data['startyr'])
+    coord=user_data['lat']+user_data['lon']
+    endyr=int(user_data['endyr'])
+
+
+def graph():
+    #image = BytesIO()
+    #fig.savefig(image)
+    return 'went through' #image.getvalue(), 200, {'Content-Type': 'image/png'}
 
 @app.route('/download')
 def generatefile():
@@ -70,7 +58,7 @@ def post(dffilepath):
     cw = csv.writer(si)
     cw.write(content)
     output = make_response(si.getvalue())
-    output.headers["Content-Disposition"] = "attachment; filename=fraud.csv"
+    output.headers["Content-Disposition"] = "attachment; filename=bfwratios.csv"
     output.headers["Content-type"] = "text/csv"
     #message to browser to return text as csv
     return output
