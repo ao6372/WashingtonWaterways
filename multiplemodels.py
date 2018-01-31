@@ -51,6 +51,11 @@ def get_avgpctls(allyearpctls):
     meandf=groupedf.mean()
     return meandf
 
+def get_cumulative_sum(fivepctldf):
+    meanlist=list(fivepctldf.mean())
+    percentchange=[abs(meanlist[i]-meanlist[i-1])/meanlist[i-1]
+                    for i in range(len(meanlist))]
+    return  sum(percentchange)
 
 def plot_fivepctls(fivepctldf, votepctl, startyear, endyear, thresh, coord):
     #model map

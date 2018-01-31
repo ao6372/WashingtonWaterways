@@ -1,24 +1,30 @@
+document.getElementById("submitButton").addEventListener("click", callCalcRoute)
 
-  submit = function(){
-    lat = $("input#lat").val()
-    lon = $("input#lon").val()
-    startyr = $("input#startyr").val()
-    endyr = $("input#endyr").val()
-    thresh=$("input#thresh").val()
+function callCalcRoute(event) {
+  event.preventDefault()
 
-    values = {lat : lat,
-      lon : lon,
-      startyr : startyr,
-      endyr: endyr}
+  console.log("hello")
 
-    console.log(values)
+  Lattitude = $("input#lat").val()
+  Longitude = $("input#lon").val()
+  Startyear = $("input#startyr").val()
+  Endyear = $("input#endyr").val()
 
-    $.post({
-      url: "/calculate",
+  values = {
+    Lattitude: Lattitude,
+    Longitude: Longitude,
+    Startyear: Startyear,
+    Endyear: Endyear
+  }
+
+  console.log(values)
+
+  $.post({
+    url: "/calculate",
     contentType: "application/json",
     data: JSON.stringify(values),
-    success: function(result){
-      $(".hidden").css("display","inline").html("Roots are ");
+    success: function(result) {
+      $(".hidden").css("display", "inline").html("Roots are ");
     }
-    });
-  }
+  });
+}
