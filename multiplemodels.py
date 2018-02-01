@@ -89,7 +89,7 @@ def make_multimodel_plotdataA1(coord, startyear, endyear):
     dfpctls=gevsamps_modelsyears(startyear, coord, endyear, paths)
     downloaddata=get_avgpctls(dfpctls) #for downloading analysis
     ratiodata=get_fivepctl(dfpctls)
-    avgratio=modelgraphdata.mean()
+    avgratio=ratiodata.mean()
     #probabilitydata=above_threshold(thresh, modelgraphdata, coord)
     return downloaddata, ratiodata, avgratio
 
