@@ -16,6 +16,7 @@ def find_beta_TBFW(coord, dfsource=locationparams):
     lat=coord[1:9]
     lon=coord[11:21]
     #extracts region from reference file
+    #based on
     r=locationparams[(locationparams['Lattitude']==float(lat))&
                (locationparams['Longitude']==float(lon))]['Region'].values[0]
 
