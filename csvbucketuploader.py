@@ -5,6 +5,7 @@ import boto3
 import os
 from io import StringIO
 from multiplemodels import make_multimodel_plotdataA1
+import multiprocessing
 
 modelist=['ccsm3_A1B','cgcm3.1_t47_A1B','cnrm_cm3_A1B','echam5_A1B',
                 'echo_g_A1B', 'pcm1_A1B']
@@ -38,20 +39,11 @@ def makefoldname_fromcoord(coord):
     foldname=coord[1:3]+coord[4:9]+'_'+coord[12:15]+coord[16:21]
     return foldname
 
-def csvuploadermain():
+def csvuploadermain(coordlist):
 
     s3=boto3.client("s3")
-    latinterest=[47.03125, 47.09375, 47.15625, 47.21875,
-            47.28125, 47.34375, 47.40625, 47.46875, 47.53125,
-            47.59375, 47.65625, 47.71875, 47.78125,47.84375,
-            47.90625, 47.96875, 48.03125, 48.09375]
-    loninterest=[-122.78125,-122.71875,-122.65625,-122.59375,-122.53125,
-                -122.46875,-122.40625,-122.34375,-122.28125,-122.21875,
-                -122.15625,-122.09375,-122.03125, -121.96875,-121.90625,
-                -121.84375,-121.78125,-121.71875]
     startyear=2015
     endyear=2099
-    coordlist=make_coordlookup(latinterest, loninterest)
     bucket_name='washingtonwaterwaycsv'
 
     for coord in coordlist:
@@ -67,5 +59,20 @@ def csvuploadermain():
         os.system(aws_base_command+" {}".format(bucketloc))
         os.system('rm -r {}'.format(foldername))
 
+
+
+
 if __name__ == '__main__':
-    csvuploadermain()
+    latinterest=[47.03125, 47.09375, 47.15625, 47.21875,
+            47.28125, 47.34375, 47.40625, 47.46875, 47.53125,
+            47.59375, 47.65625, 47.71875, 47.78125,47.84375,
+            47.90625, 47.96875, 48.03125, 48.09375]
+    loninterest=[-122.78125,-122.71875,-122.65625,-122.59375,-122.53125,
+                -122.46875,-122.40625,-122.34375,-122.28125,-122.21875,
+                -122.15625,-122.09375,-122.03125, -121.96875,-121.90625,
+                -121.84375,-121.78125,-121.71875]
+
+    coordlist=make_coordlookup(latinterest, loninterest)
+
+    pool=multiprocessing.Pool(multiprocessing.cpu_count())
+    pool.map(csvuploadermain, coordlist)
