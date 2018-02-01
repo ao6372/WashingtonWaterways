@@ -10,12 +10,17 @@ def find_sample_pctl(TBFW):
     q=1-1/TBFW
     return q
 
+def make_latlon(coord):
+    latlon=coord.strip('()').split(',')
+
+    lat=latlon[0]
+    lon=latlon[1][1:]
+    return lat, lon
 
 def find_beta_TBFW(coord, dfsource=locationparams):
     #coord must be a string like '(48.71875, -122.09375)'
     #returns the region and the TBFW and beta
-    lat=coord[1:9]
-    lon=coord[11:21]
+    lat, lon=make_latlon(coord)
     #extracts region from reference file
     #based on
     try:
