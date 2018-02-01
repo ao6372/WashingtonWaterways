@@ -51,7 +51,7 @@ def csvuploadermain():
     startyear=2015
     endyear=2099
     coordlist=make_coordlookup(latinterest, loninterest)
-    bucket_name=washingtonwaterwaycsv
+    bucket_name='washingtonwaterwaycsv'
 
     for coord in coordlist:
         downloaddata, ratiodata, avgratio=make_multimodel_plotdataA1(coord, startyear, endyear)
