@@ -51,11 +51,6 @@ def get_avgpctls(allyearpctls):
     meandf=groupedf.mean()
     return meandf
 
-def get_cumulative_sum(fivepctldf):
-    meanlist=list(fivepctldf.mean())
-    percentchange=[abs(meanlist[i]-meanlist[i-1])/meanlist[i-1]
-                    for i in range(len(meanlist))]
-    return  sum(percentchange)
 
 def plot_fivepctls(fivepctldf, votepctl, startyear, endyear, thresh, coord):
     #model map
@@ -83,7 +78,7 @@ def plot_fivepctls(fivepctldf, votepctl, startyear, endyear, thresh, coord):
     ax2.legend()
     return fig, fig2
 
-def make_multimodel_plotdataA1(coord, startyear, endyear, thresh, paths):
+def make_multimodel_plotdataA1(coord, startyear, endyear):
     paths=['reference_csv/ccsm3_A1B.csv',
                     'reference_csv/cgcm3.1_t47_A1B.csv',
                     'reference_csv/cnrm_cm3_A1B.csv',
@@ -93,10 +88,10 @@ def make_multimodel_plotdataA1(coord, startyear, endyear, thresh, paths):
                     ]
     dfpctls=gevsamps_modelsyears(startyear, coord, endyear, paths)
     downloaddata=get_avgpctls(dfpctls) #for downloading analysis
-    modelgraphdata=get_fivepctl(dfpctls)
-    modelavgdata=modelgraphdata.mean()
-    probabilitydata=above_threshold(thresh, modelgraphdata, coord)
-    return downloaddata, modelgraphdata, modelavgdata, probabilitydata
+    ratiodata=get_fivepctl(dfpctls)
+    avgratio=modelgraphdata.mean()
+    #probabilitydata=above_threshold(thresh, modelgraphdata, coord)
+    return downloaddata, ratiodata, avgratio
 
 
 def make_multimodel_plotdataB1(coord, startyear, endyear, thresh):
