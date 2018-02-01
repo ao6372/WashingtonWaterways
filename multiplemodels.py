@@ -2,7 +2,7 @@ from netCDF4 import Dataset
 import pandas as pd
 import numpy as np
 from collections import defaultdict
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 from scipy.stats import genextreme
 from math import gamma
@@ -52,31 +52,31 @@ def get_avgpctls(allyearpctls):
     return meandf
 
 
-def plot_fivepctls(fivepctldf, votepctl, startyear, endyear, thresh, coord):
-    #model map
-    x=np.arange(startyear+1,endyear+1)
-    yscale=np.linspace(.1,1,10)
-    fig = plt.figure()
-    fig, ax=plt.subplots(figsize=(10,5))
-    for row in range(fivepctldf.shape[0]):
-        y=fivepctldf.iloc[row:].values[0]
-        ax.plot(x, y, 'blue', alpha=.3)
-    ax.plot(x, fivepctldf.mean(), 'blue', label='average')
-    ax.legend()
-    ax.set_xlabel('Year')
-    ax.set_ylabel('BFW/BFW0')
-    ax.set_title('Ratio of Stream Flow {} - {} for {}'.format(startyear+1,endyear, coord))
-    ax.axhline(thresh, label='Threshold', color= 'black')
-
-    #probability graph
-    fig2, ax2=plt.subplots(figsize=(10,5))
-    ax2.set_title('Probability of Stream Ratio above Threshold {} - {} for {}'.format(startyear+1,endyear, coord))
-    ax2.plot(x, votepctl ,'r', label='Probability' )
-    ax2.tick_params('y', colors='r')
-    ax2.set_yticks(yscale)
-    ax2.set_ylabel('Probability Above Threshold (%)')
-    ax2.legend()
-    return fig, fig2
+# def plot_fivepctls(fivepctldf, votepctl, startyear, endyear, thresh, coord):
+#     #model map
+#     x=np.arange(startyear+1,endyear+1)
+#     yscale=np.linspace(.1,1,10)
+#     fig = plt.figure()
+#     fig, ax=plt.subplots(figsize=(10,5))
+#     for row in range(fivepctldf.shape[0]):
+#         y=fivepctldf.iloc[row:].values[0]
+#         ax.plot(x, y, 'blue', alpha=.3)
+#     ax.plot(x, fivepctldf.mean(), 'blue', label='average')
+#     ax.legend()
+#     ax.set_xlabel('Year')
+#     ax.set_ylabel('BFW/BFW0')
+#     ax.set_title('Ratio of Stream Flow {} - {} for {}'.format(startyear+1,endyear, coord))
+#     ax.axhline(thresh, label='Threshold', color= 'black')
+#
+#     #probability graph
+#     fig2, ax2=plt.subplots(figsize=(10,5))
+#     ax2.set_title('Probability of Stream Ratio above Threshold {} - {} for {}'.format(startyear+1,endyear, coord))
+#     ax2.plot(x, votepctl ,'r', label='Probability' )
+#     ax2.tick_params('y', colors='r')
+#     ax2.set_yticks(yscale)
+#     ax2.set_ylabel('Probability Above Threshold (%)')
+#     ax2.legend()
+#     return fig, fig2
 
 def make_multimodel_plotdataA1(coord, startyear, endyear):
     paths=['reference_csv/ccsm3_A1B.csv',

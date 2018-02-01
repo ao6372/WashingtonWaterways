@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import requests
 import boto3
-import psycopg2
 import os
 from io import StringIO
 from multiplemodels import make_multimodel_plotdataA1
