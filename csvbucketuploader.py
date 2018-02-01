@@ -30,7 +30,7 @@ def get_cumulative_pctchange(dfsqlall):
 def make_coordlookup(latinterest, loninterest):
     #coordinates are lat and lon combinations
     #strings formatted need to be like so '(48.71875, -122.09375)'
-    coordlist=[str((lat,lon)) for latinterest in lats for lon in loninterest]
+    coordlist=[str((lat,lon)) for lat in latinterest for lon in loninterest]
     return coordlist
 
 def makefoldname_fromcoord(coord):
