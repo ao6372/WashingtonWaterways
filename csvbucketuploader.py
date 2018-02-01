@@ -35,7 +35,7 @@ def make_coordlookup(latinterest, loninterest):
 
 def makefoldname_fromcoord(coord):
     #takes string to make proper foldername with no negative sign
-    foldname=coord[1:3]+coord[4:9]+'_'+coord[12:15]+c[16:20]
+    foldname=coord[1:3]+coord[4:9]+'_'+coord[12:15]+coord[16:20]
     return foldname
 
 def csvuploadermain():
