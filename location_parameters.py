@@ -10,6 +10,7 @@ def find_sample_pctl(TBFW):
     q=1-1/TBFW
     return q
 
+
 def find_beta_TBFW(coord, dfsource=locationparams):
     #coord must be a string like '(48.71875, -122.09375)'
     #returns the region and the TBFW and beta
@@ -17,8 +18,18 @@ def find_beta_TBFW(coord, dfsource=locationparams):
     lon=coord[11:21]
     #extracts region from reference file
     #based on
-    r=locationparams[(locationparams['Lattitude']==float(lat))&
+    try:
+        r=locationparams[(locationparams['Lattitude']==float(lat))&
                (locationparams['Longitude']==float(lon))]['Region'].values[0]
+    except IndexError as e:
+        with open('missing.log', 'a') as f:
+            f.write(coord + '\n')
+            return (0, 0)
+        #msg=f"lat is {lat}, lon is {lon}, shape of r is {r.shape}, error is {repr(e)}"
+        #raise IndexError(msg)
+    except ValueError as e:
+        msg=f"lat is {lat}, lon is {lon}, error is {repr(e)}"
+        raise ValueError(msg)
 
     if r=='CP':
         beta=.6
