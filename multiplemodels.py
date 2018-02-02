@@ -81,14 +81,14 @@ def plot_fivepctls(fivepctldf, votepctl, startyear, endyear, thresh, coord):
     return fig, fig2
 
 def make_multimodel_plotdataA1(coord, startyear, endyear):
-    paths=['reference_csv/ccsm3_A1B.csv',
+    pathsA1=['reference_csv/ccsm3_A1B.csv',
                     'reference_csv/cgcm3.1_t47_A1B.csv',
                     'reference_csv/cnrm_cm3_A1B.csv',
                      'reference_csv/echam5_A1B.csv',
                      'reference_csv/echo_g_A1B.csv',
                     'reference_csv/pcm1_A1B.csv'
                     ]
-    dfpctls=gevsamps_modelsyears(startyear, coord, endyear, paths)
+    dfpctls=gevsamps_modelsyears(startyear, coord, endyear, pathsA1)
     downloaddata=get_avgpctls(dfpctls) #for downloading analysis
     ratiodata=get_fivepctl(dfpctls)
     avgratio=ratiodata.mean()
@@ -97,7 +97,7 @@ def make_multimodel_plotdataA1(coord, startyear, endyear):
 
 
 def make_multimodel_plotdataB1(coord, startyear, endyear, thresh):
-    paths=['reference_csv/ccsm3_B1.csv',
+    pathsB1=['reference_csv/ccsm3_B1.csv',
                 'reference_csv/cnrm_cm3_B1.csv',
                 'reference_csv/echam5_B1.csv',
                 'reference_csv/echo_g_B1.csv',
@@ -105,7 +105,7 @@ def make_multimodel_plotdataB1(coord, startyear, endyear, thresh):
                 'reference_csv/pcm1_B1.csv'
                 ]
 
-    dfpctls=gevsamps_modelsyears(startyear, coord, endyear, paths)
+    dfpctls=gevsamps_modelsyears(startyear, coord, endyear, pathsB1)
     meandf=get_avgpctls(dfpctls) #for downloading analysis
     fivepctldf=get_fivepctl(dfpctls)
     votepctl=above_threshold(thresh, fivepctldf, coord)
