@@ -1,6 +1,6 @@
 
 <img src="images/salmonculvert.jpg" 
- width="240" height="180" border="10" />
+ width="240" height="200" border="10" />
 
 ## The Culvert Case 
 
@@ -28,13 +28,14 @@ I collaborated with the University of Washington Climate Impacts group (CIG) to 
 These models generated 949 Gb of raw flow data each in NetCDF format. The state of Washington is divided into 1/16 degree latitude and longitude coordinates resulting in roughly 10,000 coordinates with unique weather pattern activity.
 
 ## Model and Processing
-We are examining extreme values over 100 years of data to extract an estimate for the bankfull width of a stream for a given year. 
+We are examining extreme values over 100 years of data to extract an estimate for the bankfull width of a stream for a given water year (defined as Oct 1 - Sept 30). I learned to use NetCDF4 (Python API for NetCDF) to compile the raw data and extract the most extreme flow values for each water year and model. 
 
-\begin{equation*}
-\mathbf{BFW}_2 \divide \mathbf{BFW}_1 =  \left(
-\mathbf{i} & \mathbf{j} & \mathbf{k} \\
+Using scipy.stats to model a general extreme value distribution for 30 year increments, we could see the extreme values for a given year. 
+I tuned the bootstrap situation to refle
 
-\end{equation*}
+
+<img src="images/salmonculvert.jpg" 
+ width="240" height="200" border="10" />
  
 
 ## Conclusion 
