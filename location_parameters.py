@@ -48,4 +48,4 @@ def find_beta_TBFW(coord, dfsource=locationparams):
         beta=.5
         TBFW=1.2
 
-    return beta, TBFW
+    return .6, 1.4

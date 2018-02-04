@@ -86,7 +86,7 @@ def main():
     address = "postgresql://{}:{}@{}:{}/{}".format(db_username, db_password, db_host, port, db_name)
     engine = create_engine(address)
 
-    write_to_table(df, engine, 'A1Data', 'append')
+    write_to_table(df, engine, 'A1Data')
 
 if __name__ == '__main__':
     main()
