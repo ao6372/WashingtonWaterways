@@ -74,5 +74,5 @@ if __name__ == '__main__':
 
     coordlist=make_coordlookup(latinterest, loninterest)
 
-    pool=multiprocessing.Pool(multiprocessing.cpu_count())
-    pool.map(csvuploadermain, coordlist)
+
+    csvuploadermain(coordlist)
