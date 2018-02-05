@@ -74,5 +74,4 @@ if __name__ == '__main__':
 
     coordlist=make_coordlookup(latinterest, loninterest)
 
-
     csvuploadermain(coordlist)
