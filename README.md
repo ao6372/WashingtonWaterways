@@ -39,7 +39,7 @@ To understand probability and range of values, we bootstrapped 20 out of 30 data
 By comparing the ratio of these flow rate values each year (represented by Q in the equation below), we can calculate the bankfull width of a given stream and year. The future bankfull width is calculated as a proportion of the current bankfull width. 
 
 <img src="images/BFWformula.png" 
- width="240" height="200" border="10" />
+ width="240" height="100" border="10" />
  
 
 ## Conclusion 
