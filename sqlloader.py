@@ -7,6 +7,9 @@ import io
 from sqlalchemy import create_engine
 import multiprocessing
 
+
+modelnamesB1=['ccsm3_B1.csv', 'cnrm_cm3_A1B.csv', 'echam5_B1.csv', 'echo_g_B1.csv','hadcm_B1.csv', 'pcm1_B1.csv']
+
 modelnamesA1=['ccsm3_A1B','cgcm3.1_t47_A1B','cnrm_cm3_A1B','echam5_A1B',
                 'echo_g_A1B', 'pcm1_A1B']
 

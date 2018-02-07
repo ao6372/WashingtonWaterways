@@ -13,17 +13,7 @@ from location_parameters import find_beta_TBFW
 
 from model import convertfiles_toratios
 
-#list of file location references
-#order matters to know which models made which percentile that jumped
 
-
-
-
-#associated models with each path for researcher reference
-modelnamesA1=['ccsm3_A1B','cgcm3.1_t47_A1B','cnrm_cm3_A1B','echam5_A1B',
-                'echo_g_A1B', 'pcm1_A1B']
-
-modelnamesB1=['ccsm3_B1.csv', 'cnrm_cm3_A1B.csv', 'echam5_B1.csv', 'echo_g_B1.csv','hadcm_B1.csv', 'pcm1_B1.csv']
 
 
 def gevsamps_modelsyears(startyear, coord, endyear, dfpaths):
@@ -108,5 +98,5 @@ def make_multimodel_plotdataB1(coord, startyear, endyear, thresh):
     dfpctls=gevsamps_modelsyears(startyear, coord, endyear, pathsB1)
     meandf=get_avgpctls(dfpctls) #for downloading analysis
     fivepctldf=get_fivepctl(dfpctls)
-    votepctl=above_threshold(thresh, fivepctldf, coord)
-    return
+    avgratio=ratiodata.mean()
+    return downloaddata, ratiodata, avgratio

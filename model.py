@@ -107,8 +107,6 @@ def make_gev_samples(dataarray, year, pctl, n=1000):
 
 def gev_samples_allyears(startyear, coord, endyear, dfsource):
     #coord must be in string with a space formatted like so '(48.71875, -122.09375)'
-    #highdf is to understand stream width over time
-    #lowdf is for comparison with BFW
     #returns dfs with n (default 1000) samples per year
     sampdflist=[]
     #adjusts for different TBFW in different regions
@@ -127,7 +125,6 @@ def gev_samples_allyears(startyear, coord, endyear, dfsource):
 
 def make_ratios(gevsampsallyrs):
     #makes ratios of the year over current year
-    #intended for lowdf which are the .167 percentile values from each iteration of GEV
     #makes dataframe with number of sample entries in rows and columns are yeari/year0
     ratiolist=[]
     for year in gevsampsallyrs.columns[1:]:
@@ -155,16 +152,6 @@ def plot_dist_quantiles(yearstart, yearend, df):
     ax.set_ylabel('Ratio')
     ax.set_title('Ratio of Stream Flow {} - {}'.format(yearstart,yearend))
     ax.legend()
-    return fig
-
-def onclick_main(startyear, coord, endyear, dfsource):
-    #possibly allow download of the ratiodf
-    beta, TBFW=find_beta_TBFW(coord)
-    gevsampsallyrs=gev_samples_allyears(startyear, coord, endyear, dfsource)
-    ratiodf=make_ratios(gevsampsallyrs)
-    ratiodfbeta=ratiodf**beta
-    pctldf=find_percentiles(ratiodf)
-    fig=plot_dist_quantiles(pctldf.columns[0], pctldf.columns[-1], pctldf)
     return fig
 
 
