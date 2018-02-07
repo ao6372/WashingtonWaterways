@@ -28,18 +28,22 @@ I collaborated with the University of Washington Climate Impacts group (CIG) to 
 These models generated 949 Gb of raw flow data each in NetCDF format. The state of Washington is divided into 1/16 degree latitude and longitude coordinates resulting in roughly 10,000 coordinates with unique weather pattern activity.
 
 ## Model and Processing
-We are examining extreme values over 100 years of data to extract an estimate for the bankfull width of a stream for a given water year (defined as Oct 1 - Sept 30). I learned to use NetCDF4 (Python API for NetCDF) to compile the raw data and extract the most extreme flow values for each water year and model. 
+We are examining extreme values over 100 years of data to extract an estimate for the bankfull width of a stream for a given water year (defined as Oct 1 - Sept 30). I learned to use NetCDF4 (Python API for NetCDF) to compile the raw data and extract the most extreme flow values for each water year and model. The raw data is the daily projected volumetric flow rate (cubif feet per second) for each latitude and longitude combination in Washington State. These values are saved for each model in the reference_csv folder. 
 
-Using scipy.stats to model a general extreme value distribution for 30 year increments, we could see the extreme values for a given year. 
-I tuned the bootstrap situation to refle
+I used scipy.stats to model a general extreme value distribution (GEV) using the past 30 years of data. The GEV is selected becuase extensive research and atmospheric science standards have shown this distribution to be the maximum likelihood estimator for climate change assesment studies. Therefore, it is the best way to fit future data. Also, the GEV combines three different distributions based on shape parameter so it is much more flexible. 
 
+I generated a GEV for each year (2015 to 2099) using the past 30 years of data to the respective year. We chose to consider the past 30 years to make each GEV because it allows for optimal sample size and predictive ability. The L-Moments (shape, scale, and location) were calculated based on the methods from the publication "Estimation of the Generalized Extreme-Value Distribution by the Method of Probability-Weighted Moments" by Hosking in the folder reference_publications. 
 
-<img src="images/salmonculvert.jpg" 
- width="240" height="200" border="10" />
+To understand probability and range of values, we bootstrapped 20 out of 30 data points and made 1000 GEV distributions. There are three distinct climate regions in the Washington state (Pacific Maritime, Western Cordillera, and Columbia Plateau). The location_parameters.py file accounts for these regional situations in the calculation. Out of 1000 GEV distributions generated for each year, I gathered a sample representing the daily and 10 year storm estimates. From this data we could extract the 5 and 95th percentile values, providing a confidence bound for each model.
+
+By comparing the ratio of these flow rate values each year (represented by Q in the equation below), we can calculate the bankfull width of a given stream and year. The future bankfull width is calculated as a proportion of the current bankfull width. 
+
+<img src="images/BFWformula.png" 
+ width="24" height="20" border="10" />
  
 
 ## Conclusion 
-As a final product, I developed a website where a civil engineer can enter in coordinates and receive the likelihood of stream width change. This information will help Washington state better understand their construction costs and prevent replacement costs in the future. Furthermore, this tool will will help ensure salmon migration is preserved and building plans are conscious of weather changes in the coming years. 
+As a final product, I collaborated with Daniel Larsson to create a website where a civil engineer can enter in coordinates and receive the likelihood of stream width change. The website also shows the probability a certain culvert width will fail. This information will help Washington state better understand their construction costs and prevent replacement costs in the future. Furthermore, this tool will will help ensure salmon migration is preserved and building plans are conscious of weather changes in the coming years. 
 
 
 
