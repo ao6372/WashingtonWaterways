@@ -12,8 +12,8 @@ from location_parameters import find_sample_pctl
 from location_parameters import find_beta_TBFW
 
 from model import convertfiles_toratios
-
-
+import os
+import multiprocessing
 
 
 def gevsamps_modelsyears(startyear, coord, endyear, dfpaths):
@@ -79,14 +79,15 @@ def make_multimodel_plotdataA1(coord, startyear, endyear):
                     'reference_csv/pcm1_A1B.csv'
                     ]
     dfpctls=gevsamps_modelsyears(startyear, coord, endyear, pathsA1)
-    downloaddata=get_avgpctls(dfpctls) #for downloading analysis
+    #downloaddata=get_avgpctls(dfpctls) #this is all the percentiles
+    #the ratio data will be available for download instead
     ratiodata=get_fivepctl(dfpctls)
     avgratio=ratiodata.mean()
     #probabilitydata=above_threshold(thresh, modelgraphdata, coord)
-    return downloaddata, ratiodata, avgratio
+    return ratiodata, avgratio
 
 
-def make_multimodel_plotdataB1(coord, startyear, endyear, thresh):
+def make_multimodel_plotdataB1(coord, startyear, endyear):
     pathsB1=['reference_csv/ccsm3_B1.csv',
                 'reference_csv/cnrm_cm3_B1.csv',
                 'reference_csv/echam5_B1.csv',
@@ -99,4 +100,36 @@ def make_multimodel_plotdataB1(coord, startyear, endyear, thresh):
     meandf=get_avgpctls(dfpctls) #for downloading analysis
     fivepctldf=get_fivepctl(dfpctls)
     avgratio=ratiodata.mean()
-    return downloaddata, ratiodata, avgratio
+    return ratiodata, avgratio
+
+def make_coordlookup(latinterest, loninterest):
+    coordlist=[str((latinterest[i],loninterest[i])) for i in range(len(latinterest))]
+    return coordlist
+
+def makefilename_fromcoord(coord):
+    #takes string to make proper foldername with no negative sign
+    filename=coord[1:9]+coord[11:21]
+    return filename
+
+def generate_allfiles(coordlist):
+    #generates website lookup files for all the coordinates in the VIC file
+
+    startyear=2018
+    endyear=2099
+    for coord in coordlist:
+        ratiodata, avgdratio=make_multimodel_plotdataA1(coord, startyear, endyear)
+        filename=makefilename_fromcoord(coord, model)
+        ratiodata.to_csv('wadatasetA1/{}ratio.csv'.format(filename))
+        avgratio.to_csv('wadatasetA1/{}avgratio.csv'.format(filename))
+
+def main():
+        locationparams=pd.read_csv('VIC_Castro_Regions.csv')
+        locationparams.columns=['Latitude', 'Longitude', 'Region']
+
+        lat=locationparams['Latitude']
+        lon=locationparams['Longitude']
+
+        coordlist=make_coordlookup(lat, lon)
+
+        pool=multiprocessing.Pool(multiprocessing.cpu_count())
+        pool.map(main, coordlist)

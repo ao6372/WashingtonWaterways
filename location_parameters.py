@@ -4,7 +4,7 @@
 import pandas as pd
 
 locationparams=pd.read_csv('VIC_Castro_Regions.csv')
-locationparams.columns=['Lattitude', 'Longitude', 'Region']
+locationparams.columns=['Latitude', 'Longitude', 'Region']
 
 def find_sample_pctl(TBFW):
     q=1-1/TBFW
@@ -24,7 +24,7 @@ def find_beta_TBFW(coord, dfsource=locationparams):
     # #extracts region from reference file
     # #based on
     try:
-        r=locationparams[(locationparams['Lattitude']==float(lat))&
+        r=locationparams[(locationparams['Latitude']==float(lat))&
                (locationparams['Longitude']==float(lon))]['Region'].values[0]
     except IndexError as e:
         with open('missing.log', 'a') as f:

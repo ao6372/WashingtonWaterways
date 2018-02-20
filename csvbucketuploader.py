@@ -47,12 +47,12 @@ def csvuploadermain(coordlist):
     bucket_name='washingtonwaterwaycsv'
 
     for coord in coordlist:
-        downloaddata, ratiodata, avgratio=make_multimodel_plotdataA1(coord, startyear, endyear)
+        ratiodata, avgratio=make_multimodel_plotdataA1(coord, startyear, endyear)
         foldername=makefoldname_fromcoord(coord)
         os.system('mkdir {}'.format(foldername))
         downloaddata.to_csv('{}/download.csv'.format(foldername))
         ratiodata.to_csv('{}/ratio.csv'.format(foldername))
-        ratiodata.to_csv('{}/avgratio.csv'.format(foldername))
+        avgratio.to_csv('{}/avgratio.csv'.format(foldername))
 
         bucketloc='s3://{}/{}'.format(bucket_name, foldername)
         aws_base_command='aws s3 sync {}'.format(foldername)
