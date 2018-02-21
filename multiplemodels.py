@@ -133,3 +133,6 @@ def main():
 
         pool=multiprocessing.Pool(multiprocessing.cpu_count())
         pool.map(main, coordlist)
+
+if __name__ == '__main__':
+    main()

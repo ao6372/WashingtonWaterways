@@ -127,7 +127,7 @@ def make_ratios(gevsampsallyrs):
     #makes ratios of the year over current year
     #makes dataframe with number of sample entries in rows and columns are yeari/year0
     ratiolist=[]
-    for year in gevsampsallyrs.columns[1:]:
+    for year in gevsampsallyrs.columns:
         ratioentry=gevsampsallyrs[year]/gevsampsallyrs[gevsampsallyrs.columns[0]]
         entrycol=pd.DataFrame(ratioentry)
         entrycol.columns=[str(year)]
