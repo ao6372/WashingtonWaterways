@@ -116,8 +116,8 @@ def generate_allfiles(coord):
 
     startyear=2018
     endyear=2099
-    
-    ratiodata, avgdratio=make_multimodel_plotdataA1(coord, startyear, endyear)
+
+    ratiodata, avgratio=make_multimodel_plotdataA1(coord, startyear, endyear)
     filename=makefilename_fromcoord(coord, model)
     ratiodata.to_csv('wadatasetA1/{}ratio.csv'.format(filename))
     avgratio.to_csv('wadatasetA1/{}avgratio.csv'.format(filename))
