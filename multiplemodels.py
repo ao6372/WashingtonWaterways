@@ -111,16 +111,16 @@ def makefilename_fromcoord(coord):
     filename=coord[1:9]+coord[11:21]
     return filename
 
-def generate_allfiles(coordlist):
+def generate_allfiles(coord):
     #generates website lookup files for all the coordinates in the VIC file
 
     startyear=2018
     endyear=2099
-    for coord in coordlist:
-        ratiodata, avgdratio=make_multimodel_plotdataA1(coord, startyear, endyear)
-        filename=makefilename_fromcoord(coord, model)
-        ratiodata.to_csv('wadatasetA1/{}ratio.csv'.format(filename))
-        avgratio.to_csv('wadatasetA1/{}avgratio.csv'.format(filename))
+    
+    ratiodata, avgdratio=make_multimodel_plotdataA1(coord, startyear, endyear)
+    filename=makefilename_fromcoord(coord, model)
+    ratiodata.to_csv('wadatasetA1/{}ratio.csv'.format(filename))
+    avgratio.to_csv('wadatasetA1/{}avgratio.csv'.format(filename))
 
 def main():
         locationparams=pd.read_csv('VIC_Castro_Regions.csv')
