@@ -132,7 +132,7 @@ def main():
         coordlist=make_coordlookup(lat, lon)
 
         pool=multiprocessing.Pool(multiprocessing.cpu_count())
-        pool.map(main, coordlist)
+        pool.map(generate_allfiles, coordlist)
 
 if __name__ == '__main__':
     main()
