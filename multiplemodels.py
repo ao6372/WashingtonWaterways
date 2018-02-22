@@ -70,15 +70,15 @@ def plot_fivepctls(fivepctldf, votepctl, startyear, endyear, thresh, coord):
     ax2.legend()
     return fig, fig2
 
-def make_multimodel_plotdataA1(coord, startyear, endyear):
-    pathsA1=['reference_csv/ccsm3_A1B.csv',
+def make_multimodel_plotdataA1B(coord, startyear, endyear):
+    pathsA1B=['reference_csv/ccsm3_A1B.csv',
                     'reference_csv/cgcm3.1_t47_A1B.csv',
                     'reference_csv/cnrm_cm3_A1B.csv',
                      'reference_csv/echam5_A1B.csv',
                      'reference_csv/echo_g_A1B.csv',
                     'reference_csv/pcm1_A1B.csv'
                     ]
-    dfpctls=gevsamps_modelsyears(startyear, coord, endyear, pathsA1)
+    dfpctls=gevsamps_modelsyears(startyear, coord, endyear, pathsA1B)
     #downloaddata=get_avgpctls(dfpctls) #this is all the percentiles
     #the ratio data will be available for download instead
     ratiodata=get_fivepctl(dfpctls)
@@ -97,8 +97,7 @@ def make_multimodel_plotdataB1(coord, startyear, endyear):
                 ]
 
     dfpctls=gevsamps_modelsyears(startyear, coord, endyear, pathsB1)
-    meandf=get_avgpctls(dfpctls) #for downloading analysis
-    fivepctldf=get_fivepctl(dfpctls)
+    ratiodata=get_fivepctl(dfpctls)
     avgratio=ratiodata.mean()
     return ratiodata, avgratio
 
@@ -117,7 +116,7 @@ def generate_allfiles(coord):
     startyear=2018
     endyear=2099
 
-    ratiodata, avgratio=make_multimodel_plotdataA1(coord, startyear, endyear)
+    ratiodata, avgratio=make_multimodel_plotdataB1(coord, startyear, endyear)
     filename=makefilename_fromcoord(coord)
     ratiodata.to_csv('wadatasetA1/{}ratio.csv'.format(filename))
     avgratio.to_csv('wadatasetA1/{}avgratio.csv'.format(filename))
