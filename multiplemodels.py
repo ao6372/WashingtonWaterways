@@ -119,7 +119,7 @@ def generate_allfiles(coord):
 
     ratiodata, avgratio=make_multimodel_plotdataB1(coord, startyear, endyear)
     filename=makefilename_fromcoord(coord)
-    os.system('mkdir wadatasetB1/{}'.format(foldername))
+    os.system('mkdir wadatasetB1/{}'.format(filename))
     ratiodata.to_csv('wadatasetB1/{}/{}ratio.csv'.format(filename,filename))
     avgratio.to_csv('wadatasetB1/{}/{}avgratio.csv'.format(filename, filename))
 
