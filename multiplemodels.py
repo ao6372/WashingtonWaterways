@@ -31,12 +31,25 @@ def get_fivepctl(dfpctls):
     fivepctldf=dfpctls.groupby(dfpctls.index).get_group(.05)
     return fivepctldf
 
-def above_threshold(thresh, fivepctldf, coord):
+#reflects the website's calculation on prob of failure
+def prob_failure(thresh, ratiocsv, bfw, lifetime):
     #takes list of dataframes and looks for 5th Percentile for all models
-    #records year
-    vote=fivepctldf[fivepctldf>thresh].count(axis=0)
-    votepctls=vote/fivepctldf.shape[0] #divides by number of models
-    return votepctls
+    ratiocsv=ratiocsv*(bfw*1.2+2)
+    startyr=2019
+    endyr=lifetime+2018
+    selected=ratiocsv.loc[:, str(startyr):str(endyr)]
+
+
+    vote=selected[selected>thresh].count(axis=0)
+    probfail=vote/ratiocsv.shape[0] #divides by number of models
+    inverseprob=[1-p for p in probfail]
+
+    multiple=1
+    for p in inverseprob:
+        multiple=p*multiple
+
+
+    return float(1-multiple)
 
 def get_avgpctls(allyearpctls):
     groupedf=allyearpctls.groupby(allyearpctls.index)
