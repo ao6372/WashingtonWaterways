@@ -1,11 +1,11 @@
 import pandas as pd
 from model import convertfiles_toratios
-from multiplemodels import make_multimodel_plotdataA1
 import psycopg2
 import os
 import io
 from sqlalchemy import create_engine
 import multiprocessing
+import datetime
 
 
 modelnamesB1=['ccsm3_B1.csv', 'cnrm_cm3_A1B.csv', 'echam5_B1.csv', 'echo_g_B1.csv','hadcm_B1.csv', 'pcm1_B1.csv']
@@ -20,6 +20,12 @@ pathsA1=['reference_csv/ccsm3_A1B.csv',
                  'reference_csv/echo_g_A1B.csv',
                 'reference_csv/pcm1_A1B.csv'
                 ]
+db_name=os.environ['WW_DB_NAME']
+db_host=os.environ['WW_DB_HOST']
+db_username=os.environ['WW_DB_USERNAME']
+db_password=os.environ['WW_DB_PASSWORD']
+port=5432
+
 def makedataframe_sqlformatA1(startyear, coord, endyear, dfpaths=pathsA1, modelist=modelnamesA1):
     pctldfslist=[]
     lat=float(coord[1:9])
@@ -57,55 +63,52 @@ def makedataframe_sqlformatA1(startyear, coord, endyear, dfpaths=pathsA1, modeli
     return dfsqlall
 
 
-
-def write_to_table(df, db_engine, table_name, if_exists='fail'):
-    string_data_io = io.StringIO()
-    df.to_csv(string_data_io, sep='|', index=False)
-    pd_sql_engine = pd.io.sql.pandasSQL_builder(db_engine)
-    table = pd.io.sql.SQLTable(table_name, pd_sql_engine, frame=df,
-                               index=False, if_exists=if_exists)
-    table.create()
-    string_data_io.seek(0)
-    string_data_io.readline()  # remove header
-    with db_engine.connect() as connection:
-        with connection.connection.cursor() as cursor:
-            copy_cmd = "COPY %s FROM STDIN HEADER DELIMITER '|' CSV" % table_name
-            cursor.copy_expert(copy_cmd, string_data_io)
-        connection.connection.commit()
-
 def make_coordlookup(latinterest, loninterest):
-    #coordinates are lat and lon combinations
-    #strings formatted need to be like so '(48.71875, -122.09375)'
-    coordlist=[str((lat,lon)) for lat in latinterest for lon in loninterest]
+    coordlist=[str((latinterest[i],loninterest[i])) for i in range(len(latinterest))]
     return coordlist
 
-def main(coordlist):
-    db_name=os.environ['DB_NAME']
-    db_host=os.environ['DB_HOST']
-    db_username=os.environ['DB_USERNAME']
-    db_password=os.environ['DB_PASSWORD']
-    port=5432
-    # conn = psycopg2.connect('dbname={}, host={}, user={}, password={}, port={}'
-    #                     .format(db_name, db_host, db_username, db_password, port))
-    startyear=2015
-    endyear=2099
-    address = "postgresql://{}:{}@{}:{}/{}".format(db_username, db_password, db_host, port, db_name)
-    engine = create_engine(address)
-    for coord in coordlist:
-        df=makedataframe_sqlformatA1(startyear, coord, endyear)
 
-        write_to_table(df, engine, 'A1Data', 'append')
+def upload_log_entry(coord):
+    conn = psycopg2.connect(database=db_name, user=db_username, host=db_host, password=db_password)
+    cursor = conn.cursor()
+    logentry=[coord, datetime.datetime.now()]
+    template = ', '.join(['%s'] * len(logentry))
+    querylog = '''INSERT INTO a1datalog
+               (coord, uploaded)
+               VALUES ({})'''.format(template)
+
+    cursor.execute(query=querylog, vars=logentry)
+    conn.commit()
+
+def upload_table_entry(coord):
+    conn = psycopg2.connect(database=db_name, user=username, host=host, password=password)
+    cursor = conn.cursor()
+
+    template = ', '.join(['%s'] * len(df.columns))
+
+    #table already created with constraints
+    query = '''INSERT INTO a1data
+       (ratios, percentile, year, model, lat, lon)
+           VALUES ({})'''.format(template)
+
+    startyear=2018
+    endyear=2099
+    df=makedataframe_sqlformatA1(startyear, coord, endyear)
+
+    for index, row in df.iterrows():
+        cursor.execute(query=query, vars=row)
+
+    upload_log_entry(coord)
+    conn.commit()
 
 if __name__ == '__main__':
-    latinterest=[47.03125, 47.09375, 47.15625, 47.21875,
-                47.28125, 47.34375, 47.40625, 47.46875, 47.53125,
-                47.59375, 47.65625, 47.71875, 47.78125,47.84375,
-                47.90625, 47.96875, 48.03125, 48.09375]
-    loninterest=[-122.78125,-122.71875,-122.65625,-122.59375,-122.53125,
-                    -122.46875,-122.40625,-122.34375,-122.28125,-122.21875,
-                    -122.15625,-122.09375,-122.03125, -121.96875,-121.90625,
-                    -121.84375,-121.78125,-121.71875]
+    locationparams=pd.read_csv('VIC_Castro_Regions.csv')
+    locationparams.columns=['Latitude', 'Longitude', 'Region']
 
-    coordlist=make_coordlookup(latinterest, loninterest)
+    lat=locationparams['Latitude']
+    lon=locationparams['Longitude']
 
-    main(coordlist)
+    coordlist=make_coordlookup(lat, lon)
+
+    pool=multiprocessing.Pool(multiprocessing.cpu_count())
+    pool.map(upload_table_entry, coordlist)
