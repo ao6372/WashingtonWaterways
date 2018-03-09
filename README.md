@@ -43,9 +43,12 @@ By comparing the ratio of these flow rate values each year (represented by Q in 
  
 
 ## Conclusion 
-As a final product, I collaborated with Daniel Larsson to create a website where a civil engineer can enter in coordinates and receive the likelihood of stream width change. The website also shows the probability that a certain culvert width will fail. Since there are roughly 10,000 locations in this dataset, I built a SQL database for more efficient data access. The SQL database will allow a relative comparison of climate change activity in each region, providing a way to prioritize certain high risk culvert analysis. The website will eventually be hosted from a UW server and all the code is transitioned to the CIG. This information will help Washington state better understand their construction costs and prevent replacement costs in the future. Furthermore, this tool will will help ensure salmon migration is preserved and building plans are conscious of weather changes in the coming years. 
+As a final product, I collaborated with Daniel Larsson to create a website where a civil engineer can enter in coordinates and receive the likelihood of stream width change. The website also shows the probability that a certain culvert width will fail. Since there are roughly 5,000 locations in this dataset, I built a SQL database for more efficient data access. The SQL database will allow a relative comparison of climate change activity in each region, providing a way to prioritize certain high risk culvert analysis. The website is hosted on the UW server ad all the code is transitioned to the CIG through a series of hand off meetings. This information will help Washington state better understand their construction costs and prevent replacement costs in the future. Furthermore, this tool will will help ensure salmon migration is preserved and building plans are conscious of weather changes in the coming years. 
 
 Further work includes studying different climate change models and adding them to the 6 that were included in this study. I included data from a moderate and reduced C02 emission case. However, the CIG is interested in generating more data for different C02 emission cases and the code is set up to process the NetCDF files for future investigations. Legislation for construction constraints has not been defined yet and this information will allow risk analysis for deciding appropriate action thresholds. 
+
+CIG Project Site: https://cig.uw.edu/our-work/decision-support/culvert-phase-2/
+Culvert Planning Tool Site: http://cses.washington.edu/picea/mauger/2018_04_SC2_Culverts/pub/waterways/ (Coded by Daniel Larsson)
 
 
 
