@@ -69,6 +69,7 @@ def make_coordlookup(latinterest, loninterest):
 
 
 def upload_log_entry(coord):
+    #a1datalog table schema already loaded
     conn = psycopg2.connect(database=db_name, user=db_username, host=db_host, password=db_password)
     cursor = conn.cursor()
     logentry=[coord, datetime.datetime.now()]
