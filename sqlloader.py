@@ -81,7 +81,7 @@ def upload_log_entry(coord):
     conn.commit()
 
 def upload_table_entry(coord):
-    conn = psycopg2.connect(database=db_name, user=username, host=host, password=password)
+    conn = psycopg2.connect(database=db_name, user=db_username, host=db_host, password=db_password)
     cursor = conn.cursor()
 
     template = ', '.join(['%s'] * len(df.columns))
@@ -100,6 +100,7 @@ def upload_table_entry(coord):
 
     upload_log_entry(coord)
     conn.commit()
+    conn.close()
 
 if __name__ == '__main__':
     locationparams=pd.read_csv('VIC_Castro_Regions.csv')
@@ -112,4 +113,3 @@ if __name__ == '__main__':
 
     pool=multiprocessing.Pool(multiprocessing.cpu_count())
     pool.map(upload_table_entry, coordlist)
-    conn.close()
