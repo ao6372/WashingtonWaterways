@@ -3,7 +3,6 @@ from model import convertfiles_toratios
 import psycopg2
 import os
 import io
-from sqlalchemy import create_engine
 import multiprocessing
 import datetime
 
