@@ -113,3 +113,4 @@ if __name__ == '__main__':
 
     pool=multiprocessing.Pool(multiprocessing.cpu_count())
     pool.map(upload_table_entry, coordlist)
+    conn.close()
