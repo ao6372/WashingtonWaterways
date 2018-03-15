@@ -81,9 +81,11 @@ def upload_log_entry(coord):
     conn.commit()
 
 def upload_table_entry(coord):
+    startyear=2018
+    endyear=2099
     conn = psycopg2.connect(database=db_name, user=db_username, host=db_host, password=db_password)
     cursor = conn.cursor()
-    
+
     df=makedataframe_sqlformatA1(startyear, coord, endyear)
     template = ', '.join(['%s'] * len(df.columns))
 
@@ -91,9 +93,6 @@ def upload_table_entry(coord):
     query = '''INSERT INTO a1data
        (ratios, percentile, year, model, lat, lon)
            VALUES ({})'''.format(template)
-
-    startyear=2018
-    endyear=2099
 
 
     for index, row in df.iterrows():
