@@ -83,7 +83,8 @@ def upload_log_entry(coord):
 def upload_table_entry(coord):
     conn = psycopg2.connect(database=db_name, user=db_username, host=db_host, password=db_password)
     cursor = conn.cursor()
-
+    
+    df=makedataframe_sqlformatA1(startyear, coord, endyear)
     template = ', '.join(['%s'] * len(df.columns))
 
     #table already created with constraints
@@ -93,7 +94,7 @@ def upload_table_entry(coord):
 
     startyear=2018
     endyear=2099
-    df=makedataframe_sqlformatA1(startyear, coord, endyear)
+
 
     for index, row in df.iterrows():
         cursor.execute(query=query, vars=row)
