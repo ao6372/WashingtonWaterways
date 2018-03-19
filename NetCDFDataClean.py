@@ -37,35 +37,34 @@ def mainexample(filepath="Database files/hb2860_transient_runs.ccsm3_A1B.example
     return finaldf
 
 def awsmain(keyfiltup):
-    key, filename=keyfiltup
-    s3=boto3.client("s3")
+    url, filename=keyfiltup
+    #s3=boto3.client("s3")
     #downloads from s3 bucket 'uwmodelfiles'
     #filename is the csv filename for the final cleaned df
     #This code has specifications for taking top value per year for
     #dates above 1985-10-1 for a specific file set
 
-
-    with tempfile.TemporaryDirectory(dir='/mnt/ww/tmp') as tmpdirname:
-        ncfile=os.path.join(tmpdirname, 'placeholder.nc')
-        response=s3.download_file(Bucket='uwmodelfiles',
-                         Key=key,
-                         Filename=ncfile)
-        group=Dataset(ncfile)
-        clist=makecoordlist(group)
-        tlist=maketimelist(group)
-        runoffdf=makedfrunoff(group, clist, tlist)
-        baseflowdf=makedfbaseflow(group, clist, tlist)
-        df=runoffdf+baseflowdf
-        #this file already includes dates from 19850
-        #change date if you want to include different window
-        df=df[[c for c in df.columns if c >pd.to_datetime('1985-10-1')]]
-        #add water yearfirst
-        waterdf=addwateryear(df)
-        #take top 30 values per year
-        maxyearly=take_top_yearly_values(waterdf)
-        #convert to cfs
-        finaldf=maxyearly.apply(convertocfs)
-        #finaldf.index=finaldf['wateryear']
+    #with tempfile.TemporaryDirectory(dir='/mnt/ww/tmp') as tmpdirname:
+        #ncfile=os.path.join(tmpdirname, 'placeholder.nc')
+        #response=s3.download_file(Bucket='uwmodelfiles',
+                         #Key=key,
+                         #Filename=ncfile)
+    group=dl_one_netcdf(url)
+    clist=makecoordlist(group)
+    tlist=maketimelist(group)
+    runoffdf=makedfrunoff(group, clist, tlist)
+    baseflowdf=makedfbaseflow(group, clist, tlist)
+    df=runoffdf+baseflowdf
+    #this file already includes dates from 19850
+    #change date if you want to include different window
+    df=df[[c for c in df.columns if c >pd.to_datetime('1985-10-1')]]
+    #add water yearfirst
+    waterdf=addwateryear(df)
+    #take top 30 values per year
+    maxyearly=take_top_yearly_values(waterdf)
+    #convert to cfs
+    finaldf=maxyearly.apply(convertocfs)
+    #finaldf.index=finaldf['wateryear']
 
     finaldf.to_csv(filename)
 
@@ -194,19 +193,22 @@ def dl_allfiles(baselink, linklist):
 def main():
         #reads off the bucket files to make dataframes with water year as index
         #columns are lat/lon combination
-    keylist=['ccsm3_A1B/hb2860_transient_runs.ccsm3_A1B.nc',
-                'ccsm3_B1/hb2860_transient_runs.ccsm3_B1.nc',
-                'cgcm3.1_t47_A1B/hb2860_transient_runs.cgcm3.1_t47_A1B.nc',
-                'cnrm_cm3_A1B/hb2860_transient_runs.cnrm_cm3_A1B.nc',
-                'cnrm_cm3_B1/hb2860_transient_runs.cnrm_cm3_B1.nc',
-                'echam5_A1B/hb2860_transient_runs.echam5_A1B.nc',
-                'echam5_B1/hb2860_transient_runs.echam5_B1.nc',
-                'echo_g_A1B/hb2860_transient_runs.echo_g_A1B.nc',
-                'echo_g_B1/hb2860_transient_runs.echo_g_B1.nc',
-                'hadcm_B1/hb2860_transient_runs.hadcm_B1.nc',
-                'pcm1_A1B/hb2860_transient_runs.pcm1_A1B.nc',
-                'pcm1_B1/hb2860_transient_runs.pcm1_B1.nc'
-                ]
+    # keylist=['ccsm3_A1B/hb2860_transient_runs.ccsm3_A1B.nc',
+    #             'ccsm3_B1/hb2860_transient_runs.ccsm3_B1.nc',
+    #             'cgcm3.1_t47_A1B/hb2860_transient_runs.cgcm3.1_t47_A1B.nc',
+    #             'cnrm_cm3_A1B/hb2860_transient_runs.cnrm_cm3_A1B.nc',
+    #             'cnrm_cm3_B1/hb2860_transient_runs.cnrm_cm3_B1.nc',
+    #             'echam5_A1B/hb2860_transient_runs.echam5_A1B.nc',
+    #             'echam5_B1/hb2860_transient_runs.echam5_B1.nc',
+    #             'echo_g_A1B/hb2860_transient_runs.echo_g_A1B.nc',
+    #             'echo_g_B1/hb2860_transient_runs.echo_g_B1.nc',
+    #             'hadcm_B1/hb2860_transient_runs.hadcm_B1.nc',
+    #             'pcm1_A1B/hb2860_transient_runs.pcm1_A1B.nc',
+    #             'pcm1_B1/hb2860_transient_runs.pcm1_B1.nc'
+    #             ]
+
+    #url=[INSERT URLS HERE that must correspond with filenames]
+
     filenames=['reference_csv/ccsm3_A1B.csv', 'reference_csv/ccsm3_B1.csv',
                 'reference_csv/cgcm3.1_t47_A1B.csv', 'reference_csv/cnrm_cm3_A1B.csv',
                 'reference_csv/cnrm_cm3_B1.csv', 'reference_csv/echam5_A1B.csv',
