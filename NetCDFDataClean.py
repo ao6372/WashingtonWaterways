@@ -8,6 +8,8 @@ import boto3
 import os
 import tempfile
 import multiprocessing
+from bs4 import BeautifulSoup
+
 
 def mainexample(filepath="Database files/hb2860_transient_runs.ccsm3_A1B.example (2).nc"):
     #for each saved file it will clean it up and produce the DataFrame
@@ -147,8 +149,10 @@ import time
 import requests
 from bs4 import BeautifulSoup
 
-#scraping UW database portion
+#scraping UW database portion (multiple links on one page)
 #make list of baselinks
+#ex baselink is http://warm.atmos.washington.edu/2860/r7climate/hb2860_transient_runs/ccsm3_A1B/netcdf_daily/
+
 def retrieveurls(baselink):
     response = requests.get(baselink)
     soup=BeautifulSoup(response.text, "html.parser")
@@ -161,9 +165,10 @@ def retrieveurls(baselink):
 def makelink(baselink, link):
     return baselink+link
 
-def fetch_netcdf(url):
+#write to temp file in binary the nc
+#url example is http://cses.washington.edu/picea/mauger/2018_04_SC2_Culverts/DATA/WA_tr_hb2860/ccsm3_A1B/hb2860_transient_runs.ccsm3_A1B.nc
+def dl_one_netcdf(url):
     """Fetch NetCDF data from URL and return Dataset."""
-
     data = requests.get(url).content
     with open('temp.nc', 'wb') as f:
         f.write(data)
