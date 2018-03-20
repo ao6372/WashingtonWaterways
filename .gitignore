@@ -3,3 +3,4 @@
 *.pyc
 __pycache__
 	dataset exploration-laptop.ipynb
+*.nc
